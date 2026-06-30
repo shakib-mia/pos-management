@@ -1,43 +1,72 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "react-toastify";
-import ReCAPTCHA from "react-google-recaptcha";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import type { User } from "../interfaces/User";
+import axios from "axios";
 
 const Register = () => {
+	const [fullName, setFullName] = useState("");
 	const [email, setEmail] = useState("");
+	const [subdomain, setSubdomain] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
-	const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
-	const isPasswordsMatch = password === confirmPassword;
-	const isFormValid =
-		email &&
-		password &&
-		confirmPassword &&
-		isPasswordsMatch &&
-		recaptchaToken;
-	console.log(recaptchaToken);
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+
 		if (password !== confirmPassword) {
 			toast.error("Passwords do not match. Please try again.", {
 				position: "bottom-center",
 			});
 			return;
 		}
-		if (!recaptchaToken) {
-			toast.error("Please verify the reCAPTCHA", {
-				position: "bottom-center",
-			});
+
+		if (!/^[a-z0-9-]+$/.test(subdomain)) {
+			toast.error(
+				"Subdomain can only contain lowercase letters, numbers, and hyphens.",
+				{
+					position: "bottom-center",
+				},
+			);
 			return;
 		}
-		console.log("Registering user", { email, password, recaptchaToken });
-		toast.success(`Registered with email: ${email}`, {
-			position: "bottom-center",
-			autoClose: 3000,
-		});
+
+		const user: User = {
+			fullName,
+			email,
+			subdomain,
+			password,
+			createdAt: Date.now(),
+			updatedAt: Date.now(),
+		};
+
+		try {
+			const { data } = await axios.post(
+				import.meta.env.VITE_BACKEND_URL + "api/users",
+				user,
+			);
+
+			toast.success(data.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+			});
+
+			// Optional: Reset form
+			setFullName("");
+			setEmail("");
+			setSubdomain("");
+			setPassword("");
+			setConfirmPassword("");
+		} catch (error: any) {
+			toast.error(
+				error.response?.data?.message || "Something went wrong.",
+				{
+					position: "bottom-center",
+				},
+			);
+		}
 	};
 
 	return (
@@ -51,6 +80,16 @@ const Register = () => {
 				</h1>
 
 				<Input
+					label="Full Name"
+					type="text"
+					value={fullName}
+					onChange={(event) => setFullName(event.target.value)}
+					required
+					placeholder="John Smith"
+					containerClassName="mb-4"
+				/>
+
+				<Input
 					label="Email address"
 					type="email"
 					value={email}
@@ -59,6 +98,22 @@ const Register = () => {
 					placeholder="you@example.com"
 					containerClassName="mb-4"
 				/>
+
+				<Input
+					label="Subdomain"
+					type="text"
+					value={subdomain}
+					onChange={(event) =>
+						setSubdomain(event.target.value.toLowerCase())
+					}
+					required
+					placeholder="acme-store"
+					containerClassName="mb-4"
+				/>
+				<p className="-mt-2 mb-4 text-xs text-slate-500">
+					Your workspace will be available at{" "}
+					{subdomain || "your-subdomain"}.example.com.
+				</p>
 
 				<Input
 					label="Password"
@@ -80,18 +135,16 @@ const Register = () => {
 					containerClassName="mb-4"
 				/>
 
-				<div className="mb-6 flex justify-center">
+				{/* <div className="mb-6 flex justify-center">
 					<ReCAPTCHA
 						sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
 						onChange={(token: string | null) =>
 							setRecaptchaToken(token)
 						}
 					/>
-				</div>
+				</div> */}
 
-				<Button type="submit" disabled={!isFormValid}>
-					Create account
-				</Button>
+				<Button type="submit">Create account</Button>
 
 				<div className="mt-5 text-center text-sm text-slate-600 space-y-3">
 					<div>

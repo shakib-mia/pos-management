@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import axios from "axios";
 
 const ForgotPassword = () => {
 	const [email, setEmail] = useState("");
@@ -10,17 +11,33 @@ const ForgotPassword = () => {
 
 	const isFormValid = email && email.length > 0;
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		console.log("Password reset requested for", email);
-		const resetUrl = `/reset-password?email=${encodeURIComponent(email)}`;
-		toast.success(`Reset link is ready. Redirecting...`, {
-			position: "bottom-center",
-			autoClose: 2500,
-		});
-		navigate(resetUrl);
-	};
 
+		try {
+			const { data } = await axios.post(
+				`${import.meta.env.VITE_BACKEND_URL}api/reset-password`,
+				{
+					email,
+				},
+			);
+
+			toast.success(data.message, {
+				position: "bottom-center",
+				autoClose: 3000,
+			});
+
+			// Login page-এ ফিরিয়ে দে
+			navigate("/login");
+		} catch (error: any) {
+			toast.error(
+				error?.response?.data?.message || "Failed to send reset link.",
+				{
+					position: "bottom-center",
+				},
+			);
+		}
+	};
 	return (
 		<div className="w-screen h-screen flex items-center justify-center bg-success/20 px-4">
 			<form
@@ -46,7 +63,7 @@ const ForgotPassword = () => {
 					containerClassName="mb-6"
 				/>
 
-				<Button type="submit" disabled={!isFormValid}>
+				<Button variant="primary" type="submit" disabled={!isFormValid}>
 					Send reset link
 				</Button>
 

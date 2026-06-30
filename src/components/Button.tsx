@@ -7,7 +7,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const Button = ({
-	variant = "primary",
+	variant,
 	fullWidth = true,
 	className = "",
 	disabled = false,
@@ -17,10 +17,12 @@ const Button = ({
 	const baseClasses = "rounded-lg px-4 py-3 font-semibold transition-colors";
 	const variantClasses =
 		variant === "primary"
-			? "bg-primary text-white hover:bg-primary-dark"
+			? "bg-primary border border-primary text-white hover:bg-primary-dark hover:border-primary-dark"
 			: variant === "success"
-				? "bg-success text-white hover:bg-green-600"
-				: "bg-danger text-white hover:bg-red-600";
+				? "bg-success border border-success text-white hover:bg-success-dark hover:border-success-dark"
+				: variant === "danger"
+					? "bg-danger border border-danger text-white hover:bg-danger-dark hover:border-danger-dark"
+					: "bg-white border border-primary text-primary hover:bg-primary hover:text-white";
 	const disabledClasses = disabled
 		? "opacity-50 cursor-not-allowed hover:bg-opacity-100"
 		: "cursor-pointer";
