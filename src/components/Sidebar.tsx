@@ -78,7 +78,7 @@ export default function Sidebar() {
 	const [expanded, setExpanded] = useState<string | null>("Dashboard");
 
 	return (
-		<aside className="h-screen sticky left-0 top-0 w-56 bg-white border-r border-gray-200 flex flex-col z-20">
+		<aside className="h-screen sticky left-0 top-0 w-70 bg-white border-r border-gray-200 flex flex-col z-20">
 			{/* Logo */}
 			<h1 className="text-xl font-bold text-primary p-4">
 				POS Management

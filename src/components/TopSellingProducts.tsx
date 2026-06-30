@@ -1,127 +1,234 @@
-import React from "react";
+import { Eye, Star } from "lucide-react";
 
 interface Product {
+	id: number;
 	name: string;
 	category: string;
 	image: string;
 	variant: string;
 	review: number;
 	price: number;
-	stockStatus: "In stock" | "Out of stock";
-	stockQuantity: number;
+	stock: number;
 }
 
-const topProductsData: Product[] = [
+const products: Product[] = [
 	{
-		name: "Orange-fruit",
+		id: 1,
+		name: "Orange Fruit",
 		category: "Fruits",
-		image: "https://images.unsplash.com/photo-1611080626919-7b5144bb9b52?w=100&auto=format&fit=crop",
-		variant: "no variant",
-		review: 0,
-		price: 60.0,
-		stockStatus: "In stock",
-		stockQuantity: 0,
+		image: "https://placehold.co/80x80",
+		variant: "No Variant",
+		review: 4.8,
+		price: 60,
+		stock: 120,
 	},
 	{
-		name: "Azuki beans bowl",
+		id: 2,
+		name: "Azuki Beans Bowl",
 		category: "Beans",
-		image: "https://images.unsplash.com/photo-1515562141107-af6b2b4e695a?w=100&auto=format&fit=crop",
-		variant: "no variant",
-		review: 0,
-		price: 20.0,
-		stockStatus: "In stock",
-		stockQuantity: 0,
+		image: "https://placehold.co/80x80",
+		variant: "No Variant",
+		review: 4.5,
+		price: 20,
+		stock: 82,
 	},
 	{
-		name: "Grocery Master App",
-		category: "Grocery Master App",
-		image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=100&auto=format&fit=crop",
-		variant: "no variant",
-		review: 0,
-		price: 110.0,
-		stockStatus: "In stock",
-		stockQuantity: 0,
-	},
-	{
+		id: 3,
 		name: "Trix",
-		category: "Grocery Master App",
-		image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=100&auto=format&fit=crop",
-		variant: "no variant",
-		review: 0,
-		price: 125.0,
-		stockStatus: "In stock",
-		stockQuantity: 0,
+		category: "Snacks",
+		image: "https://placehold.co/80x80",
+		variant: "500gm",
+		review: 4.7,
+		price: 125,
+		stock: 45,
+	},
+	{
+		id: 4,
+		name: "Rice Cereal",
+		category: "Grocery",
+		image: "https://placehold.co/80x80",
+		variant: "1kg",
+		review: 4.2,
+		price: 132,
+		stock: 220,
+	},
+	{
+		id: 5,
+		name: "Tuna Light",
+		category: "Sea Food",
+		image: "https://placehold.co/80x80",
+		variant: "250gm",
+		review: 4.9,
+		price: 214,
+		stock: 37,
+	},
+	{
+		id: 5,
+		name: "Tuna Light",
+		category: "Sea Food",
+		image: "https://placehold.co/80x80",
+		variant: "250gm",
+		review: 4.9,
+		price: 214,
+		stock: 37,
+	},
+	{
+		id: 5,
+		name: "Tuna Light",
+		category: "Sea Food",
+		image: "https://placehold.co/80x80",
+		variant: "250gm",
+		review: 4.9,
+		price: 214,
+		stock: 37,
+	},
+	{
+		id: 5,
+		name: "Tuna Light",
+		category: "Sea Food",
+		image: "https://placehold.co/80x80",
+		variant: "250gm",
+		review: 4.9,
+		price: 214,
+		stock: 37,
+	},
+	{
+		id: 5,
+		name: "Tuna Light",
+		category: "Sea Food",
+		image: "https://placehold.co/80x80",
+		variant: "250gm",
+		review: 4.9,
+		price: 214,
+		stock: 37,
 	},
 ];
 
-export const TopSellingProducts: React.FC = () => {
+const TopSellingProducts = () => {
 	return (
-		<div className="w-full bg-white rounded-lg shadow-sm border border-gray-100 p-6 mt-6 col-span-4">
-			<div className="flex justify-between items-center mb-4">
-				<h2 className="text-lg font-semibold bg-amber-100/50 text-amber-900 px-3 py-1 rounded">
-					Top Selling Products
-				</h2>
-				<button className="text-sm font-medium text-emerald-600 hover:bg-emerald-50 px-3 py-1 rounded-md transition-colors">
+		<div className="bg-white rounded-2xl border border-slate-200 shadow-sm h-full row-span-2 overflow-y-auto">
+			<div className="flex items-center justify-between p-6 border-b border-slate-100">
+				<div>
+					<h2 className="text-lg font-semibold text-slate-800">
+						Top Selling Products
+					</h2>
+
+					<p className="text-sm text-slate-500">
+						Best performing products
+					</p>
+				</div>
+
+				<button className="text-primary hover:text-primary-dark text-sm font-medium">
 					View All
 				</button>
 			</div>
 
 			<div className="overflow-x-auto">
-				<table className="w-full text-left border-collapse">
-					<thead>
-						<tr className="bg-emerald-50/50 text-emerald-900 text-xs font-semibold uppercase tracking-wider border-b border-emerald-100">
-							<th className="py-3 px-4 rounded-tl-lg">Name</th>
-							<th className="py-3 px-4">Category</th>
-							<th className="py-3 px-4">Cover Image</th>
-							<th className="py-3 px-4">Variant</th>
-							<th className="py-3 px-4">Review</th>
-							<th className="py-3 px-4">Price</th>
-							<th className="py-3 px-4">Stock Status</th>
-							<th className="py-3 px-4 rounded-tr-lg">
-								Stock Quantity
+				<table className="w-full min-w-275">
+					<thead className="bg-slate-50">
+						<tr>
+							<th className="px-6 py-4 text-left text-xs uppercase text-slate-500">
+								Product
+							</th>
+
+							<th className="px-6 py-4 text-left text-xs uppercase text-slate-500">
+								Category
+							</th>
+
+							<th className="px-6 py-4 text-center text-xs uppercase text-slate-500">
+								Image
+							</th>
+
+							<th className="px-6 py-4 text-center text-xs uppercase text-slate-500">
+								Variant
+							</th>
+
+							<th className="px-6 py-4 text-center text-xs uppercase text-slate-500">
+								Review
+							</th>
+
+							<th className="px-6 py-4 text-right text-xs uppercase text-slate-500">
+								Price
+							</th>
+
+							<th className="px-6 py-4 text-center text-xs uppercase text-slate-500">
+								Stock
+							</th>
+
+							<th className="px-6 py-4 text-center text-xs uppercase text-slate-500">
+								Action
 							</th>
 						</tr>
 					</thead>
-					<tbody className="divide-y divide-gray-50 text-sm">
-						{topProductsData.map((product, index) => (
+
+					<tbody>
+						{products.map((product) => (
 							<tr
-								key={index}
-								className="hover:bg-gray-50/50 transition-colors"
+								key={product.id}
+								className="border-t border-slate-100 hover:bg-slate-50 transition"
 							>
-								<td className="py-3 px-4 font-medium text-gray-800 whitespace-nowrap">
-									{product.name}
+								<td className="px-6 py-4">
+									<p className="font-semibold text-slate-800">
+										{product.name}
+									</p>
 								</td>
-								<td className="py-3 px-4 text-gray-600 whitespace-nowrap">
+
+								<td className="px-6 py-4 text-slate-600">
 									{product.category}
 								</td>
-								<td className="py-3 px-4 whitespace-nowrap">
-									<img
-										src={product.image}
-										alt={product.name}
-										className="w-10 h-10 object-cover rounded-md border border-gray-200 shadow-sm"
-									/>
+
+								<td className="px-6 py-4">
+									<div className="flex justify-center">
+										<img
+											src={product.image}
+											alt={product.name}
+											className="w-14 h-14 rounded-lg object-cover border"
+										/>
+									</div>
 								</td>
-								<td className="py-3 px-4 text-gray-500 whitespace-nowrap">
+
+								<td className="px-6 py-4 text-center text-slate-600">
 									{product.variant}
 								</td>
-								<td className="py-3 px-4 whitespace-nowrap">
-									<div className="flex items-center text-amber-500">
-										☆{" "}
-										<span className="ml-1 text-gray-600">
+
+								<td className="px-6 py-4">
+									<div className="flex justify-center items-center gap-1 text-yellow-500">
+										<Star size={16} fill="currentColor" />
+										<span className="font-medium text-slate-700">
 											{product.review}
 										</span>
 									</div>
 								</td>
-								<td className="py-3 px-4 text-gray-800 font-medium whitespace-nowrap">
-									${product.price.toFixed(1)}
+
+								<td className="px-6 py-4 text-right font-semibold">
+									${product.price.toFixed(2)}
 								</td>
-								<td className="py-3 px-4 whitespace-nowrap">
-									<span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-50 text-emerald-700">
-										{product.stockStatus}
-									</span>
+
+								<td className="px-6 py-4">
+									<div className="flex justify-center">
+										<span
+											className={`px-3 py-1 rounded-full text-xs font-semibold ${
+												product.stock > 50
+													? "bg-success/10 text-success"
+													: product.stock > 10
+														? "bg-yellow-100 text-yellow-700"
+														: "bg-danger/10 text-danger"
+											}`}
+										>
+											{product.stock}
+										</span>
+									</div>
 								</td>
-								<td className="py-3 px-4 text-gray-600 whitespace-nowrap text-center">
-									{product.stockQuantity || "."}
+
+								<td className="px-6 py-4">
+									<div className="flex justify-center">
+										<button className="w-9 h-9 rounded-lg border border-slate-200 hover:border-primary hover:bg-primary/10 transition flex items-center justify-center">
+											<Eye
+												size={18}
+												className="text-slate-600"
+											/>
+										</button>
+									</div>
 								</td>
 							</tr>
 						))}
@@ -131,3 +238,5 @@ export const TopSellingProducts: React.FC = () => {
 		</div>
 	);
 };
+
+export default TopSellingProducts;

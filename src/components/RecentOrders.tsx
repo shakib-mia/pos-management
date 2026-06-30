@@ -1,112 +1,189 @@
-import React from "react";
+import { Eye, CircleDollarSign, CreditCard, Clock3 } from "lucide-react";
 
 interface Order {
 	id: string;
 	date: string;
-	name: string;
-	value: number;
-	paymentType: string;
-	status: "Pending" | "Completed" | "Failed";
+	customer: string;
+	total: number;
+	payment: "POS" | "Stripe" | "Cash";
+	status: "Pending" | "Completed" | "Cancelled";
 }
 
-const recentOrdersData: Order[] = [
+const orders: Order[] = [
 	{
 		id: "#1742884736",
 		date: "Mar 25, 2025",
-		name: "Walk-in-customer",
-		value: 120.0,
-		paymentType: "POS",
+		customer: "Walk-in Customer",
+		total: 120,
+		payment: "POS",
 		status: "Pending",
 	},
 	{
 		id: "#320241114072594",
 		date: "Nov 14, 2024",
-		name: "Walk-in-customer",
-		value: 250.0,
-		paymentType: "Stripe",
+		customer: "Walk-in Customer",
+		total: 250,
+		payment: "Stripe",
 		status: "Pending",
 	},
 	{
 		id: "#320241114071136",
 		date: "Nov 14, 2024",
-		name: "Walk-in-customer",
-		value: 120.0,
-		paymentType: "Stripe",
-		status: "Pending",
+		customer: "Walk-in Customer",
+		total: 120,
+		payment: "Stripe",
+		status: "Completed",
 	},
 	{
 		id: "#320241114061125",
 		date: "Nov 14, 2024",
-		name: "Walk-in-customer",
-		value: 375.0,
-		paymentType: "Stripe",
-		status: "Pending",
+		customer: "Walk-in Customer",
+		total: 375,
+		payment: "Stripe",
+		status: "Completed",
 	},
 	{
 		id: "#320241114051522",
 		date: "Nov 14, 2024",
-		name: "Walk-in-customer",
-		value: 125.0,
-		paymentType: "Stripe",
-		status: "Pending",
+		customer: "Walk-in Customer",
+		total: 125,
+		payment: "Cash",
+		status: "Cancelled",
 	},
 ];
 
-export const RecentOrders: React.FC = () => {
+const paymentIcon = {
+	POS: CircleDollarSign,
+	Stripe: CreditCard,
+	Cash: CircleDollarSign,
+};
+
+const statusColor = {
+	Pending: "bg-yellow-100 text-yellow-700",
+	Completed: "bg-success/10 text-success",
+	Cancelled: "bg-danger/10 text-danger",
+};
+
+export default function RecentOrders() {
 	return (
-		<div className="w-full bg-white rounded-lg shadow-sm border border-gray-100 p-6 col-span-4">
-			<div className="flex justify-between items-center mb-4">
-				<h2 className="text-lg font-semibold text-gray-800">
-					Recent Orders
-				</h2>
-				<button className="text-sm font-medium text-emerald-600 hover:bg-emerald-50 px-3 py-1 rounded-md transition-colors">
+		<div className="bg-white rounded-2xl border border-slate-200 shadow-sm">
+			<div className="flex items-center justify-between p-6 border-b border-slate-100">
+				<div>
+					<h2 className="text-lg font-semibold text-slate-800">
+						Recent Orders
+					</h2>
+
+					<p className="text-sm text-slate-500">
+						Latest customer orders
+					</p>
+				</div>
+
+				<button className="text-primary font-medium hover:text-primary-dark">
 					View All
 				</button>
 			</div>
 
 			<div className="overflow-x-auto">
-				<table className="w-full text-left border-collapse">
-					<thead>
-						<tr className="bg-emerald-50/50 text-emerald-900 text-xs font-semibold uppercase tracking-wider border-b border-emerald-100">
-							<th className="py-3 px-4 rounded-tl-lg">Orders</th>
-							<th className="py-3 px-4">Date</th>
-							<th className="py-3 px-4">Name</th>
-							<th className="py-3 px-4">Value</th>
-							<th className="py-3 px-4">Payment Type</th>
-							<th className="py-3 px-4 rounded-tr-lg">Status</th>
+				<table className="w-full min-w-[900px]">
+					<thead className="bg-slate-50">
+						<tr>
+							<th className="px-6 py-4 text-left text-xs uppercase text-slate-500">
+								Order
+							</th>
+
+							<th className="px-6 py-4 text-left text-xs uppercase text-slate-500">
+								Date
+							</th>
+
+							<th className="px-6 py-4 text-left text-xs uppercase text-slate-500">
+								Customer
+							</th>
+
+							<th className="px-6 py-4 text-right text-xs uppercase text-slate-500">
+								Total
+							</th>
+
+							<th className="px-6 py-4 text-center text-xs uppercase text-slate-500">
+								Payment
+							</th>
+
+							<th className="px-6 py-4 text-center text-xs uppercase text-slate-500">
+								Status
+							</th>
+
+							<th className="px-6 py-4 text-center text-xs uppercase text-slate-500">
+								Action
+							</th>
 						</tr>
 					</thead>
-					<tbody className="divide-y divide-gray-50 text-sm">
-						{recentOrdersData.map((order) => (
-							<tr
-								key={order.id}
-								className="hover:bg-gray-50/50 transition-colors"
-							>
-								<td className="py-3 px-4 font-medium text-indigo-600 whitespace-nowrap">
-									{order.id}
-								</td>
-								<td className="py-3 px-4 text-gray-600 whitespace-nowrap">
-									{order.date}
-								</td>
-								<td className="py-3 px-4 text-gray-700 whitespace-nowrap">
-									{order.name}
-								</td>
-								<td className="py-3 px-4 text-gray-800 font-medium whitespace-nowrap">
-									${order.value.toFixed(1)}
-								</td>
-								<td className="py-3 px-4 text-gray-600 whitespace-nowrap">
-									{order.paymentType}
-								</td>
-								<td className="py-3 px-4 whitespace-nowrap">
-									<span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-cyan-50 text-cyan-700 border border-cyan-100">
-										{order.status} : {order.date}
-									</span>
-								</td>
-							</tr>
-						))}
+
+					<tbody>
+						{orders.map((order) => {
+							const PaymentIcon = paymentIcon[order.payment];
+
+							return (
+								<tr
+									key={order.id}
+									className="border-t border-slate-100 hover:bg-slate-50 transition"
+								>
+									<td className="px-6 py-4">
+										<p className="font-semibold text-slate-800">
+											{order.id}
+										</p>
+									</td>
+
+									<td className="px-6 py-4">
+										<div className="flex items-center gap-2 text-slate-600">
+											<Clock3 size={15} />
+											{order.date}
+										</div>
+									</td>
+
+									<td className="px-6 py-4">
+										{order.customer}
+									</td>
+
+									<td className="px-6 py-4 text-right font-semibold">
+										${order.total.toFixed(2)}
+									</td>
+
+									<td className="px-6 py-4">
+										<div className="flex justify-center">
+											<div className="flex items-center gap-2 bg-slate-100 rounded-full px-3 py-1">
+												<PaymentIcon size={16} />
+												<span className="text-sm">
+													{order.payment}
+												</span>
+											</div>
+										</div>
+									</td>
+
+									<td className="px-6 py-4">
+										<div className="flex justify-center">
+											<span
+												className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColor[order.status]}`}
+											>
+												{order.status}
+											</span>
+										</div>
+									</td>
+
+									<td className="px-6 py-4">
+										<div className="flex justify-center">
+											<button className="w-9 h-9 rounded-lg border border-slate-200 hover:border-primary hover:bg-primary/10 transition flex items-center justify-center">
+												<Eye
+													size={18}
+													className="text-slate-600"
+												/>
+											</button>
+										</div>
+									</td>
+								</tr>
+							);
+						})}
 					</tbody>
 				</table>
 			</div>
 		</div>
 	);
-};
+}

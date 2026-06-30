@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import RootLayout from "./RootLayout.js";
 import type { User } from "./interfaces/User.js";
+import StoreAnalytics from "./pages/StoreAnalytics.js";
+import ManageThemes from "./pages/ManageThemes.js";
 
 const router = createBrowserRouter([
 	{
@@ -36,6 +38,14 @@ const router = createBrowserRouter([
 			{
 				path: "/reset-password",
 				element: <ResetPassword />,
+			},
+			{
+				path: "/analytics",
+				element: <StoreAnalytics />,
+			},
+			{
+				path: "/theme-preview",
+				element: <ManageThemes />,
 			},
 		],
 	},
